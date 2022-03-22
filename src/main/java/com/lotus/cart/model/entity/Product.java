@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +30,10 @@ public class Product {
 
     @NotNull(message = "Product price cannot be null")
     private double price;
+
+    @Builder.Default
+    @Column
+    private Date createdAt = Date.from(Instant.now());
 
     @ManyToOne
     private User creator;

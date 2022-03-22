@@ -2,6 +2,7 @@ package com.lotus.cart.service;
 
 import com.lotus.cart.model.entity.User;
 import com.lotus.cart.model.request.user.UpdateUserRequest;
+import com.lotus.cart.model.response.product.SearchUserProductResponse;
 import com.lotus.cart.model.response.user.CreateUserResponse;
 import com.lotus.cart.model.response.user.SearchUserResponse;
 import com.lotus.cart.model.request.user.CreateUserRequest;
@@ -11,6 +12,7 @@ import com.lotus.cart.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -45,7 +47,6 @@ public class UserService {
                     .id(user.getId())
                     .name(user.getName())
                     .email(user.getEmail())
-                    .products(user.getProducts())
                     .build();
         }
 
@@ -54,11 +55,9 @@ public class UserService {
 
     public List<SearchUserResponse> searchAll() {
         return repository.findAll().stream()
-                .map(value -> SearchUserResponse.builder()
-                        .id(value.getId())
-                        .name(value.getName())
-                        .email(value.getEmail())
-                        .products(value.getProducts())
+                .map(user -> SearchUserResponse.builder()
+                        .id(user.getId())
+                        .name(user.getName())
                         .build())
                 .toList();
     }

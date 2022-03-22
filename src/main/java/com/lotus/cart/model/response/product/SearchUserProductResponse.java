@@ -1,12 +1,13 @@
-package com.lotus.cart.model.response.user;
+package com.lotus.cart.model.response.product;
 
+import com.lotus.cart.model.entity.Product;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 
 @AllArgsConstructor
-@Getter
-public class CreateUserResponse {
+@Builder
+public class SearchUserProductResponse {
 
     @Schema(title = "User id", description = "User id given from creation response", example = "1")
     private long id;

@@ -7,7 +7,11 @@ import com.lotus.cart.model.response.user.SearchUserResponse;
 import com.lotus.cart.model.request.user.CreateUserRequest;
 import com.lotus.cart.model.response.user.UpdateUserResponse;
 import com.lotus.cart.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.Info;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/user")
-@Tag(name = "user", description = "The user controller")
+@Api(tags = "User Controller", produces = "application/json", consumes = "application/json")
 public class UserController {
 
     private final UserService service;
@@ -30,18 +34,20 @@ public class UserController {
     /**
      * Sends a request to create a new user
      *
-     * @param createRequest   request
+     * @param createUserRequest   request
      * @return success response
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid data sent")
     })
-    @Operation(summary = "Create a new user")
+    @Operation(summary = "Create a new user", description = "Create a new user to the system")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse create(@RequestBody @Valid CreateUserRequest createRequest) {
-        return service.create(createRequest);
+    public CreateUserResponse create(@RequestBody @Valid
+                                         @Parameter(name = "User Request", description = "Data to be sent")
+                                         CreateUserRequest createUserRequest) {
+        return service.create(createUserRequest);
     }
 
     /**
@@ -75,7 +81,7 @@ public class UserController {
     @ApiResponses(
             @ApiResponse(responseCode = "200", description = "Show all users")
     )
-    @Operation(description = "Show all users")
+    @Operation(summary = "Show all users")
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<SearchUserResponse> getAll() {
@@ -94,7 +100,7 @@ public class UserController {
         }
     )
     @Operation(description = "Delete a existent user")
-    @DeleteMapping
+    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
     public void delete(DeleteUserRequest deleteRequest) {
         service.delete(deleteRequest);
@@ -112,7 +118,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Insufficient permissions")
     })
     @Operation(description = "Update a existent user")
-    @PostMapping
+    @PostMapping("/update")
     @ResponseStatus(HttpStatus.OK)
     public UpdateUserResponse update(UpdateUserRequest updateRequest) {
         return service.update(updateRequest);

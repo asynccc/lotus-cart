@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Size(min = 5, max = 16)
+    @Size(min = 5, max = 16, message = "User name must be between 5 and 16 characters long")
     @Column
     private String name;
 
@@ -34,7 +35,7 @@ public class User {
 
     @Builder.Default
     @Column
-    private Timestamp createdAt = Timestamp.from(Instant.now());
+    private Date createdAt = Date.from(Instant.now());
 
     @Builder.Default
     @OneToMany(fetch = FetchType.EAGER)
